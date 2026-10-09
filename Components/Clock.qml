@@ -31,7 +31,7 @@ Column {
         color: config.DateTextColor
         font.pointSize: 16
         font.family: "JetBrainsMono Nerd Font"
-        font.weight: Font.SemiBold
+        font.weight: Font.DemiBold
         renderType: Text.QtRendering
 
         function updateTime() {

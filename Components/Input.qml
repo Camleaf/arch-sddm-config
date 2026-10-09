@@ -1,3 +1,4 @@
+
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
@@ -7,7 +8,6 @@ Column {
 
     Layout.fillWidth: true
 
-    property ComboBox exposeSession: sessionSelect.exposeSession
     property bool failed
 
     function triggerLogin() {
@@ -32,7 +32,7 @@ Column {
             }
         }
 
-        sddm.login(targetUser, password.text, sessionSelect.selectedSession)
+        sddm.login(targetUser, password.text, sessionModel.lastIndex)
     }
 
     Item {
@@ -420,6 +420,117 @@ Column {
         ]
     }
 
+    Item {
+        id: login
+
+        // important
+        // try 4 or 9 ...
+        height: root.font.pointSize * 9
+        width: parent.width / 2
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        visible: config.HideLoginButton == "true" ? false : true
+
+        Button {
+            id: loginButton
+
+            height: root.font.pointSize * 3
+            implicitWidth: parent.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+
+            text: config.TranslateLogin || textConstants.login
+            enabled: config.AllowEmptyPassword == "true" || username.text != "" && password.text != "" ? true : false
+            hoverEnabled: true
+
+            contentItem: Text {
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+
+                font.bold: true
+                font.pointSize: root.font.pointSize
+                font.family: root.font.family
+                color: config.LoginButtonTextColor
+                text: parent.text
+                opacity: 0.5
+            }
+
+            background: Rectangle {
+                id: buttonBackground
+
+                color: config.LoginButtonBackgroundColor
+                opacity: 0.2
+                radius: config.RoundCorners || 0
+            }
+
+            states: [
+                State {
+                    name: "pressed"
+                    when: loginButton.down
+                    PropertyChanges {
+                        target: buttonBackground
+                        color: Qt.darker(config.LoginButtonBackgroundColor, 1.1)
+                        opacity: 1
+                    }
+                    PropertyChanges {
+                        target: loginButton.contentItem
+                    }
+                },
+                State {
+                    name: "hovered"
+                    when: loginButton.hovered
+                    PropertyChanges {
+                        target: buttonBackground
+                        color: Qt.lighter(config.LoginButtonBackgroundColor, 1.15)
+                        opacity: 1
+                    }
+                    PropertyChanges {
+                        target: loginButton.contentItem
+                        opacity: 1
+                    }
+                },
+                State {
+                    name: "focused"
+                    when: loginButton.activeFocus
+                    PropertyChanges {
+                        target: buttonBackground
+                        color: Qt.lighter(config.LoginButtonBackgroundColor, 1.2)
+                        opacity: 1
+                    }
+                    PropertyChanges {
+                        target: loginButton.contentItem
+                        opacity: 1
+                    }
+                },
+                State {
+                    name: "enabled"
+                    when: loginButton.enabled
+                    PropertyChanges {
+                        target: buttonBackground;
+                        color: config.LoginButtonBackgroundColor;
+                        opacity: 1
+                    }
+                    PropertyChanges {
+                        target: loginButton.contentItem;
+                        opacity: 1
+                    }
+                }
+            ]
+            transitions: [
+                Transition {
+                    PropertyAnimation {
+                        properties: "opacity, color";
+                        duration: 300
+                    }
+                }
+            ]
+
+            onClicked: triggerLogin()
+            Keys.onReturnPressed: clicked()
+            Keys.onEnterPressed: clicked()
+
+        }
+    }
 
     Item {
         id: userRegistry
