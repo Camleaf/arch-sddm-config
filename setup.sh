@@ -8,7 +8,6 @@
 
 set -euo pipefail
 
-readonly THEME_REPO="https://github.com/Keyitdev/sddm-astronaut-theme.git"
 readonly THEME_NAME="sddm-astronaut-theme"
 readonly THEMES_DIR="/usr/share/sddm/themes"
 readonly PATH_TO_GIT_CLONE="$HOME/$THEME_NAME"
