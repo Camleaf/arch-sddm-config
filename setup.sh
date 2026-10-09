@@ -128,7 +128,6 @@ install_theme() {
     local src="$HOME/$THEME_NAME"
     local dst="$THEMES_DIR/$THEME_NAME"
 
-    [[ ! -d "$src" ]] && { error "Clone repository first"; return 1;}
 
     # Backup and copy
     [[ -d "$dst" ]] && sudo mv "$dst" "${dst}_$DATE"

@@ -10,14 +10,13 @@ import "Components"
 Pane {
     id: root
 
-    height: config.ScreenHeight || Screen.height
-    width: config.ScreenWidth || Screen.ScreenWidth
-    padding: config.ScreenPadding
+    height: Screen.height
+    width: Screen.width
 
     // Click outside backdrop to close
     clip: true
     readonly property int bleed: 64
-
+    
     Image {
             id: background 
             anchors.fill: parent
@@ -25,7 +24,7 @@ Pane {
             source: config.Background
             visible: true 
             fillMode: Image.PreserveAspectCrop
-    }
+        }
 
 
     LoginForm {
